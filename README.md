@@ -277,14 +277,15 @@ Here is a way to derive the Y-Combinator.
 <summary>Solution</summary>
 
 ```scheme
-(let ((length (Y (lambda (h)
-                 (lambda (f lst)
-                   (if (null? lst)
-                       '()
-                       (cons (f (car lst)) (h f (cdr lst)))))))))
-  (map add1 '(1 2 3)))
+(define map-gen
+  (lambda (h)
+    (lambda (f)
+      (lambda (lst)
+        (if (null? lst)
+            '()
+            (cons (f (car lst)) ((h f) (cdr lst))))))))
 
-; => '(2 3 4)
+(((Y map-gen) add1) '(1 2 3)) ; => '(2 3 4)
 ```
 </details>
 
